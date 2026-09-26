@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Update Countdown</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #00ff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.countdown {
+    position: relative;
+    width: 900px;
+    padding: 22px 35px 25px;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+
+    box-shadow:
+        0 0 15px rgba(255,255,255,0.9),
+        0 0 40px rgba(255,255,255,0.5);
+
+    transition: 0.5s;
+}
+
+.title {
+    text-align: center;
+    color: #111;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    margin-bottom: 18px;
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.box {
+    width: 170px;
+    text-align: center;
+}
+
+.number {
+    font-size: 72px;
+    line-height: 0.9;
+    font-weight: 900;
+    color: #050505;
+    letter-spacing: 2px;
+
+    transition:
+        transform 0.15s,
+        color 0.5s,
+        text-shadow 0.5s;
+}
+
+.number.pop {
+    transform: scale(1.15);
+}
+
+.label {
+    margin-top: 12px;
+    color: #111;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.separator {
+    font-size: 52px;
+    font-weight: 900;
+    color: #111;
+}
+
+.progress-container {
+    width: 100%;
+    height: 5px;
+    margin-top: 22px;
+    background: #ddd;
+    overflow: hidden;
+}
+
+.progress {
+    width: 100%;
+    height: 100%;
+    background: #111;
+    transform-origin: left;
+    transition: transform 1s linear;
+}
+
+/* Shine */
+.shine {
+    position: absolute;
+    top: -50%;
+    left: -200px;
+    width: 100px;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.9),
+        transparent
+    );
+    transform: rotate(15deg);
+    animation: shine 4s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -200px;
+    }
+
+    40% {
+        left: 1100px;
+    }
+
+    100% {
+        left: 1100px;
+    }
+}
+
+/* Particles */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleMove 3s linear forwards;
+}
+
+@keyframes particleMove {
+    0% {
+        transform: translateY(80px) scale(0);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Na 22:00 */
+.countdown.finished {
+    animation: redPulse 2s infinite;
+
+    box-shadow:
+        0 0 20px rgba(255,0,0,0.8),
+        0 0 50px rgba(255,0,0,0.5);
+}
+
+.countdown.finished .title,
+.countdown.finished .number,
+.countdown.finished .label,
+.countdown.finished .separator {
+    color: red;
+}
+
+.countdown.finished .number {
+    text-shadow:
+        0 0 5px red,
+        0 0 15px red,
+        0 0 30px rgba(255,0,0,0.5);
+}
+
+.countdown.finished .progress {
+    background: red;
+}
+
+@keyframes redPulse {
+    0% {
+        box-shadow: 0 0 15px rgba(255,0,0,0.5);
+    }
+
+    50% {
+        box-shadow:
+            0 0 35px rgba(255,0,0,0.9),
+            0 0 70px rgba(255,0,0,0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 15px rgba(255,0,0,0.5);
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="countdown" id="countdown">
+
+<div class="shine"></div>
+
+<div class="title">
+    SUMMER UPDATE
+</div>
+
+<div class="timer">
+
+    <div class="box">
+        <div id="days" class="number">00</div>
+        <div class="label">DAYS</div>
+    </div>
+
+    <div class="separator">:</div>
+
+    <div class="box">
+        <div id="hours" class="number">00</div>
+        <div class="label">HOURS</div>
+    </div>
+
+    <div class="separator">:</div>
+
+    <div class="box">
+        <div id="minutes" class="number">00</div>
+        <div class="label">MINUTES</div>
+    </div>
+
+    <div class="separator">:</div>
+
+    <div class="box">
+        <div id="seconds" class="number">00</div>
+        <div class="label">SECONDS</div>
+    </div>
+
+</div>
+
+<div class="progress-container">
+    <div id="progress" class="progress"></div>
+</div>
+
+</div>
+
+<script>
+
+const countdown = document.getElementById("countdown");
+
+const days = document.getElementById("days");
+const hours = document.getElementById("hours");
+const minutes = document.getElementById("minutes");
+const seconds = document.getElementById("seconds");
+
+const progress = document.getElementById("progress");
+
+
+/* Vandaag om 22:00 */
+
+const targetDate = new Date();
+
+targetDate.setHours(22, 0, 0, 0);
+
+
+/* Start van vandaag */
+
+const startDate = new Date();
+
+startDate.setHours(0, 0, 0, 0);
+
+
+function updateCountdown() {
+
+    const now = new Date();
+
+    let difference = targetDate - now;
+
+
+    /* VOOR 22:00 */
+
+    if (difference > 0) {
+
+        countdown.classList.remove("finished");
+
+        const d = Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+        );
+
+        const h = Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+
+        const m = Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+
+        const s = Math.floor(
+            (difference / 1000) % 60
+        );
+
+
+        days.textContent =
+            String(d).padStart(2, "0");
+
+        hours.textContent =
+            String(h).padStart(2, "0");
+
+        minutes.textContent =
+            String(m).padStart(2, "0");
+
+        seconds.textContent =
+            String(s).padStart(2, "0");
+
+
+        const total =
+            targetDate - startDate;
+
+        const remaining =
+            targetDate - now;
+
+        const percentage =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    remaining / total
+                )
+            );
+
+        progress.style.transform =
+            `scaleX(${percentage})`;
+
+    }
+
+
+    /* NA 22:00 */
+
+    else {
+
+        countdown.classList.add("finished");
+
+        difference = Math.abs(difference);
+
+
+        const d = Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+        );
+
+        const h = Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+
+        const m = Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+
+        const s = Math.floor(
+            (difference / 1000) % 60
+        );
+
+
+        days.textContent =
+            "+" + String(d).padStart(2, "0");
+
+        hours.textContent =
+            String(h).padStart(2, "0");
+
+        minutes.textContent =
+            String(m).padStart(2, "0");
+
+        seconds.textContent =
+            String(s).padStart(2, "0");
+
+
+        progress.style.transform =
+            "scaleX(0)";
+    }
+
+
+    /* Pop-effect */
+
+    seconds.classList.remove("pop");
+
+    void seconds.offsetWidth;
+
+    seconds.classList.add("pop");
+
+    setTimeout(() => {
+        seconds.classList.remove("pop");
+    }, 150);
+}
+
+
+/* Particles */
+
+function createParticle() {
+
+    const particle =
+        document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.style.left =
+        Math.random() * 100 + "%";
+
+    particle.style.bottom =
+        Math.random() * 20 + "%";
+
+    particle.style.animationDuration =
+        (2 + Math.random() * 3) + "s";
+
+    countdown.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 5000);
+}
+
+
+setInterval(createParticle, 250);
+
+
+/* Start */
+
+updateCountdown();
+
+setInterval(updateCountdown, 1000);
+
+</script>
+
+</body>
+</html>
