@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Summer Update Countdown</title>
+
+<title>LIVE Countdown</title>
 
 <style>
 * {
@@ -13,145 +14,57 @@
     padding: 0;
 }
 
+html,
 body {
-    width: 100vw;
-    height: 100vh;
-    background: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+    background: transparent;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.countdown {
+/* =========================
+   CONTAINER
+========================= */
+
+#app {
     position: relative;
-    width: 900px;
-    padding: 22px 35px 25px;
-    background: white;
-    border-radius: 5px;
-    overflow: hidden;
-
-    box-shadow:
-        0 0 15px rgba(255,255,255,0.9),
-        0 0 40px rgba(255,255,255,0.5);
-
-    transition: 0.5s;
-}
-
-.title {
-    text-align: center;
-    color: #111;
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 5px;
-    margin-bottom: 18px;
-}
-
-.timer {
+    width: 100vw;
+    height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
 }
 
-.box {
-    width: 170px;
-    text-align: center;
-}
+/* =========================
+   PARTICLES
+========================= */
 
-.number {
-    font-size: 72px;
-    line-height: 0.9;
-    font-weight: 900;
-    color: #050505;
-    letter-spacing: 2px;
-
-    transition:
-        transform 0.15s,
-        color 0.5s,
-        text-shadow 0.5s;
-}
-
-.number.pop {
-    transform: scale(1.15);
-}
-
-.label {
-    margin-top: 12px;
-    color: #111;
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: 3px;
-}
-
-.separator {
-    font-size: 52px;
-    font-weight: 900;
-    color: #111;
-}
-
-.progress-container {
-    width: 100%;
-    height: 5px;
-    margin-top: 22px;
-    background: #ddd;
+.particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     overflow: hidden;
 }
 
-.progress {
-    width: 100%;
-    height: 100%;
-    background: #111;
-    transform-origin: left;
-    transition: transform 1s linear;
-}
-
-/* Shine */
-.shine {
-    position: absolute;
-    top: -50%;
-    left: -200px;
-    width: 100px;
-    height: 200%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.9),
-        transparent
-    );
-    transform: rotate(15deg);
-    animation: shine 4s infinite;
-}
-
-@keyframes shine {
-    0% {
-        left: -200px;
-    }
-
-    40% {
-        left: 1100px;
-    }
-
-    100% {
-        left: 1100px;
-    }
-}
-
-/* Particles */
 .particle {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background: white;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    pointer-events: none;
-    animation: particleMove 3s linear forwards;
+    background: #ffffff;
+    box-shadow:
+        0 0 8px #ffffff,
+        0 0 18px #00eaff,
+        0 0 30px #7a00ff;
+
+    animation: floatParticle linear infinite;
+    opacity: 0;
 }
 
-@keyframes particleMove {
+@keyframes floatParticle {
     0% {
-        transform: translateY(80px) scale(0);
+        transform: translateY(40px) scale(.4);
         opacity: 0;
     }
 
@@ -159,52 +72,398 @@ body {
         opacity: 1;
     }
 
+    80% {
+        opacity: .8;
+    }
+
     100% {
-        transform: translateY(-100px) scale(1.5);
+        transform: translateY(-180px) scale(1.2);
         opacity: 0;
     }
 }
 
-/* Na 22:00 */
-.countdown.finished {
-    animation: redPulse 2s infinite;
+/* =========================
+   COUNTDOWN
+========================= */
+
+.countdown-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px 24px;
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,10,25,.88),
+            rgba(25,10,45,.82),
+            rgba(5,20,40,.88)
+        );
+
+    border: 2px solid rgba(255,255,255,.22);
 
     box-shadow:
-        0 0 20px rgba(255,0,0,0.8),
-        0 0 50px rgba(255,0,0,0.5);
+        0 0 15px rgba(0,234,255,.35),
+        0 0 35px rgba(122,0,255,.25),
+        inset 0 0 30px rgba(255,255,255,.04);
+
+    backdrop-filter: blur(8px);
+
+    animation: boxGlow 3s ease-in-out infinite;
 }
 
-.countdown.finished .title,
-.countdown.finished .number,
-.countdown.finished .label,
-.countdown.finished .separator {
-    color: red;
-}
-
-.countdown.finished .number {
-    text-shadow:
-        0 0 5px red,
-        0 0 15px red,
-        0 0 30px rgba(255,0,0,0.5);
-}
-
-.countdown.finished .progress {
-    background: red;
-}
-
-@keyframes redPulse {
-    0% {
-        box-shadow: 0 0 15px rgba(255,0,0,0.5);
+@keyframes boxGlow {
+    0%,100% {
+        box-shadow:
+            0 0 15px rgba(0,234,255,.35),
+            0 0 35px rgba(122,0,255,.25),
+            inset 0 0 30px rgba(255,255,255,.04);
     }
 
     50% {
         box-shadow:
-            0 0 35px rgba(255,0,0,0.9),
-            0 0 70px rgba(255,0,0,0.4);
+            0 0 25px rgba(0,234,255,.65),
+            0 0 55px rgba(122,0,255,.45),
+            inset 0 0 35px rgba(255,255,255,.07);
+    }
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.title {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    white-space: nowrap;
+
+    color: white;
+
+    text-shadow:
+        0 0 5px #fff,
+        0 0 15px #00eaff,
+        0 0 30px #7a00ff;
+}
+
+/* =========================
+   TIME UNIT
+========================= */
+
+.unit {
+    position: relative;
+    width: 125px;
+    height: 115px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,.35);
+}
+
+/* shine */
+
+.unit::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -50%;
+
+    width: 40%;
+    height: 300%;
+
+    transform: rotate(25deg);
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent
+    );
+
+    animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -70%;
+    }
+
+    45%,
+    100% {
+        left: 150%;
+    }
+}
+
+/* =========================
+   NUMBERS
+========================= */
+
+.number {
+    position: relative;
+    z-index: 2;
+
+    font-size: 54px;
+    line-height: 1;
+
+    font-weight: 1000;
+
+    color: white;
+
+    font-variant-numeric: tabular-nums;
+
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 12px #00eaff,
+        0 0 25px #00eaff,
+        0 0 45px #7a00ff;
+
+    transition:
+        color .25s,
+        text-shadow .25s;
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.label {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 9px;
+
+    font-size: 11px;
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    color: #bffaff;
+
+    text-shadow:
+        0 0 7px #00eaff;
+}
+
+/* =========================
+   SEPARATOR
+========================= */
+
+.separator {
+    font-size: 43px;
+    font-weight: 1000;
+
+    color: #ffffff;
+
+    margin-top: -13px;
+
+    text-shadow:
+        0 0 8px #00eaff,
+        0 0 18px #7a00ff;
+
+    animation: separatorPulse 1s ease-in-out infinite;
+}
+
+@keyframes separatorPulse {
+    0%,100% {
+        opacity: .55;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress {
+    position: absolute;
+
+    bottom: 8px;
+    left: 24px;
+    right: 24px;
+
+    height: 5px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.1);
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00eaff,
+            #7a00ff,
+            #ff00d4
+        );
+
+    box-shadow:
+        0 0 8px #00eaff,
+        0 0 18px #7a00ff,
+        0 0 30px #ff00d4;
+
+    transition: width .5s linear;
+}
+
+/* =========================
+   POP EFFECT
+========================= */
+
+.pop {
+    animation: numberPop .25s ease-out;
+}
+
+@keyframes numberPop {
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.18);
     }
 
     100% {
-        box-shadow: 0 0 15px rgba(255,0,0,0.5);
+        transform: scale(1);
+    }
+}
+
+/* =========================
+   FINISHED / OVERTIME
+========================= */
+
+.finished .countdown-box {
+    border-color: rgba(255,40,70,.65);
+
+    animation:
+        redGlow 1.2s ease-in-out infinite;
+}
+
+@keyframes redGlow {
+    0%,100% {
+        box-shadow:
+            0 0 15px rgba(255,0,60,.35),
+            0 0 35px rgba(255,0,30,.2),
+            inset 0 0 25px rgba(255,0,30,.03);
+    }
+
+    50% {
+        box-shadow:
+            0 0 30px rgba(255,0,60,.8),
+            0 0 65px rgba(255,0,30,.5),
+            inset 0 0 35px rgba(255,0,30,.08);
+    }
+}
+
+.finished .number {
+    color: #ff3150;
+
+    text-shadow:
+        0 0 5px #fff,
+        0 0 12px #ff3150,
+        0 0 25px #ff0033,
+        0 0 45px #ff0033;
+}
+
+.finished .label {
+    color: #ff9aa8;
+
+    text-shadow:
+        0 0 8px #ff0033;
+}
+
+.finished .separator {
+    color: #ff3150;
+
+    text-shadow:
+        0 0 10px #ff0033,
+        0 0 25px #ff0033;
+}
+
+.finished .progress-fill {
+    background:
+        linear-gradient(
+            90deg,
+            #ff0033,
+            #ff3150,
+            #ff7b00
+        );
+
+    box-shadow:
+        0 0 10px #ff0033,
+        0 0 25px #ff0033;
+}
+
+/* =========================
+   MOBILE / SMALL WINDOW
+========================= */
+
+@media (max-width: 750px) {
+
+    .countdown-box {
+        gap: 6px;
+        padding: 15px 12px 21px;
+    }
+
+    .unit {
+        width: 75px;
+        height: 80px;
+    }
+
+    .number {
+        font-size: 34px;
+    }
+
+    .label {
+        font-size: 8px;
+        letter-spacing: 1.5px;
+    }
+
+    .separator {
+        font-size: 25px;
+    }
+
+    .title {
+        font-size: 11px;
+        letter-spacing: 3px;
+        top: -25px;
+    }
+
+    .progress {
+        left: 12px;
+        right: 12px;
     }
 }
 </style>
@@ -213,201 +472,86 @@ body {
 
 <body>
 
-<div class="countdown" id="countdown">
+<div id="app">
 
-<div class="shine"></div>
+```
+<div class="particles" id="particles"></div>
 
-<div class="title">
-    SUMMER UPDATE
-</div>
+<div class="countdown-box">
 
-<div class="timer">
+    <div class="title" id="title">
+        LIVE STARTS IN
+    </div>
 
-    <div class="box">
-        <div id="days" class="number">00</div>
+    <div class="unit">
+        <div class="number" id="days">00</div>
         <div class="label">DAYS</div>
     </div>
 
     <div class="separator">:</div>
 
-    <div class="box">
-        <div id="hours" class="number">00</div>
+    <div class="unit">
+        <div class="number" id="hours">00</div>
         <div class="label">HOURS</div>
     </div>
 
     <div class="separator">:</div>
 
-    <div class="box">
-        <div id="minutes" class="number">00</div>
+    <div class="unit">
+        <div class="number" id="minutes">00</div>
         <div class="label">MINUTES</div>
     </div>
 
     <div class="separator">:</div>
 
-    <div class="box">
-        <div id="seconds" class="number">00</div>
+    <div class="unit">
+        <div class="number" id="seconds">00</div>
         <div class="label">SECONDS</div>
     </div>
 
-</div>
+    <div class="progress">
+        <div class="progress-fill" id="progress"></div>
+    </div>
 
-<div class="progress-container">
-    <div id="progress" class="progress"></div>
 </div>
+```
 
 </div>
 
 <script>
 
-const countdown = document.getElementById("countdown");
+/* ==========================================
+   INSTELLINGEN
+========================================== */
 
-const days = document.getElementById("days");
-const hours = document.getElementById("hours");
-const minutes = document.getElementById("minutes");
-const seconds = document.getElementById("seconds");
-
-const progress = document.getElementById("progress");
-
-
-/* Vandaag om 22:00 */
-
-const targetDate = new Date();
-
-targetDate.setHours(22, 0, 0, 0);
+const TARGET_HOUR = 22;
+const TARGET_MINUTE = 0;
+const TARGET_SECOND = 0;
 
 
-/* Start van vandaag */
+/* ==========================================
+   ELEMENTEN
+========================================== */
 
-const startDate = new Date();
+const daysEl = document.getElementById("days");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
 
-startDate.setHours(0, 0, 0, 0);
+const titleEl = document.getElementById("title");
+const progressEl = document.getElementById("progress");
 
-
-function updateCountdown() {
-
-    const now = new Date();
-
-    let difference = targetDate - now;
-
-
-    /* VOOR 22:00 */
-
-    if (difference > 0) {
-
-        countdown.classList.remove("finished");
-
-        const d = Math.floor(
-            difference / (1000 * 60 * 60 * 24)
-        );
-
-        const h = Math.floor(
-            (difference / (1000 * 60 * 60)) % 24
-        );
-
-        const m = Math.floor(
-            (difference / (1000 * 60)) % 60
-        );
-
-        const s = Math.floor(
-            (difference / 1000) % 60
-        );
+const app = document.getElementById("app");
 
 
-        days.textContent =
-            String(d).padStart(2, "0");
+/* ==========================================
+   PARTICLES MAKEN
+========================================== */
 
-        hours.textContent =
-            String(h).padStart(2, "0");
+const particleContainer =
+    document.getElementById("particles");
 
-        minutes.textContent =
-            String(m).padStart(2, "0");
-
-        seconds.textContent =
-            String(s).padStart(2, "0");
-
-
-        const total =
-            targetDate - startDate;
-
-        const remaining =
-            targetDate - now;
-
-        const percentage =
-            Math.max(
-                0,
-                Math.min(
-                    1,
-                    remaining / total
-                )
-            );
-
-        progress.style.transform =
-            `scaleX(${percentage})`;
-
-    }
-
-
-    /* NA 22:00 */
-
-    else {
-
-        countdown.classList.add("finished");
-
-        difference = Math.abs(difference);
-
-
-        const d = Math.floor(
-            difference / (1000 * 60 * 60 * 24)
-        );
-
-        const h = Math.floor(
-            (difference / (1000 * 60 * 60)) % 24
-        );
-
-        const m = Math.floor(
-            (difference / (1000 * 60)) % 60
-        );
-
-        const s = Math.floor(
-            (difference / 1000) % 60
-        );
-
-
-        days.textContent =
-            "+" + String(d).padStart(2, "0");
-
-        hours.textContent =
-            String(h).padStart(2, "0");
-
-        minutes.textContent =
-            String(m).padStart(2, "0");
-
-        seconds.textContent =
-            String(s).padStart(2, "0");
-
-
-        progress.style.transform =
-            "scaleX(0)";
-    }
-
-
-    /* Pop-effect */
-
-    seconds.classList.remove("pop");
-
-    void seconds.offsetWidth;
-
-    seconds.classList.add("pop");
-
-    setTimeout(() => {
-        seconds.classList.remove("pop");
-    }, 150);
-}
-
-
-/* Particles */
-
-function createParticle() {
+for (let i = 0; i < 35; i++) {
 
     const particle =
         document.createElement("div");
@@ -417,28 +561,281 @@ function createParticle() {
     particle.style.left =
         Math.random() * 100 + "%";
 
-    particle.style.bottom =
-        Math.random() * 20 + "%";
+    particle.style.top =
+        (55 + Math.random() * 45) + "%";
 
     particle.style.animationDuration =
-        (2 + Math.random() * 3) + "s";
+        (3 + Math.random() * 5) + "s";
 
-    countdown.appendChild(particle);
+    particle.style.animationDelay =
+        (Math.random() * 5) + "s";
 
-    setTimeout(() => {
-        particle.remove();
-    }, 5000);
+    particle.style.transform =
+        `scale(${0.4 + Math.random()})`;
+
+    particleContainer.appendChild(particle);
 }
 
 
-setInterval(createParticle, 250);
+/* ==========================================
+   VANDAAG 22:00
+========================================== */
+
+function getTargetTime() {
+
+    const target = new Date();
+
+    target.setHours(
+        TARGET_HOUR,
+        TARGET_MINUTE,
+        TARGET_SECOND,
+        0
+    );
+
+    return target;
+}
 
 
-/* Start */
+/* ==========================================
+   START VAN DE DAG
+========================================== */
+
+function getStartTime() {
+
+    const start = new Date();
+
+    start.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    return start;
+}
+
+
+/* ==========================================
+   2 CIJFERS
+========================================== */
+
+function pad(number) {
+
+    return String(number).padStart(2, "0");
+
+}
+
+
+/* ==========================================
+   POP
+========================================== */
+
+function pop(element) {
+
+    element.classList.remove("pop");
+
+    void element.offsetWidth;
+
+    element.classList.add("pop");
+
+}
+
+
+/* ==========================================
+   UPDATE
+========================================== */
+
+let lastSecond = -1;
+
+function updateCountdown() {
+
+    const now = new Date();
+
+    const target = getTargetTime();
+
+    let difference =
+        target.getTime() -
+        now.getTime();
+
+
+    /* =========================
+       NORMALE COUNTDOWN
+    ========================= */
+
+    if (difference > 0) {
+
+        app.classList.remove("finished");
+
+        titleEl.textContent =
+            "LIVE STARTS IN";
+
+        let totalSeconds =
+            Math.floor(
+                difference / 1000
+            );
+
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
+
+        totalSeconds %= 86400;
+
+        const hours =
+            Math.floor(
+                totalSeconds / 3600
+            );
+
+        totalSeconds %= 3600;
+
+        const minutes =
+            Math.floor(
+                totalSeconds / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        daysEl.textContent =
+            pad(days);
+
+        hoursEl.textContent =
+            pad(hours);
+
+        minutesEl.textContent =
+            pad(minutes);
+
+        secondsEl.textContent =
+            pad(seconds);
+
+
+        /* progress */
+
+        const start =
+            getStartTime();
+
+        const total =
+            target.getTime() -
+            start.getTime();
+
+        const elapsed =
+            now.getTime() -
+            start.getTime();
+
+        let progress =
+            (elapsed / total) * 100;
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    progress
+                )
+            );
+
+        progressEl.style.width =
+            progress + "%";
+
+
+        /* pop elke seconde */
+
+        if (seconds !== lastSecond) {
+
+            pop(secondsEl);
+
+            lastSecond = seconds;
+
+        }
+
+    }
+
+
+    /* =========================
+       NA 22:00
+    ========================= */
+
+    else {
+
+        app.classList.add("finished");
+
+        titleEl.textContent =
+            "🔥 LIVE IS ON 🔥";
+
+        difference =
+            Math.abs(difference);
+
+        let totalSeconds =
+            Math.floor(
+                difference / 1000
+            );
+
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
+
+        totalSeconds %= 86400;
+
+        const hours =
+            Math.floor(
+                totalSeconds / 3600
+            );
+
+        totalSeconds %= 3600;
+
+        const minutes =
+            Math.floor(
+                totalSeconds / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        daysEl.textContent =
+            "+" + pad(days);
+
+        hoursEl.textContent =
+            pad(hours);
+
+        minutesEl.textContent =
+            pad(minutes);
+
+        secondsEl.textContent =
+            pad(seconds);
+
+
+        /* progress blijft vol */
+
+        progressEl.style.width =
+            "100%";
+
+
+        if (seconds !== lastSecond) {
+
+            pop(secondsEl);
+
+            lastSecond = seconds;
+
+        }
+
+    }
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
 
 updateCountdown();
 
-setInterval(updateCountdown, 1000);
+setInterval(
+    updateCountdown,
+    250
+);
 
 </script>
 
