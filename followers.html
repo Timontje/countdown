@@ -1,1 +1,498 @@
+<!DOCTYPE html>
 
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+   content="width=device-width, initial-scale=1.0">
+
+<title>TikTok Followers</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    background: transparent;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* ==============================
+   CONTAINER
+============================== */
+
+#app {
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+}
+
+
+/* ==============================
+   FOLLOWER CARD
+============================== */
+
+.followers {
+
+    position: relative;
+
+    width: 330px;
+
+    padding:
+        22px
+        25px
+        20px;
+
+    background:
+        rgba(255,255,255,0.97);
+
+    border-radius: 15px;
+
+    border:
+        2px solid
+        rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 6px 20px
+        rgba(0,0,0,0.18);
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+/* ==============================
+   SUMMER STRIPE
+============================== */
+
+.followers::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffd23f,
+            #ffb000,
+            #ff8a00
+        );
+}
+
+
+/* ==============================
+   TITLE
+============================== */
+
+.title {
+
+    margin-top: 3px;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    color: #555;
+}
+
+
+/* ==============================
+   FOLLOWER NUMBER
+============================== */
+
+.count {
+
+    margin-top: 7px;
+
+    font-size: 58px;
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    color: #111;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    letter-spacing: -2px;
+
+    transition:
+        transform .2s ease,
+        color .2s ease;
+}
+
+
+/* ==============================
+   USERNAME
+============================== */
+
+.username {
+
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    color: #777;
+
+    letter-spacing: 1px;
+}
+
+
+/* ==============================
+   UPDATE STATUS
+============================== */
+
+.status {
+
+    margin-top: 7px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #aaa;
+
+    text-transform: uppercase;
+}
+
+
+/* ==============================
+   NUMBER CHANGE
+============================== */
+
+.pop {
+
+    transform:
+        scale(1.08);
+
+}
+
+
+/* ==============================
+   LOADING
+============================== */
+
+.loading {
+
+    color: #999;
+
+}
+
+
+/* ==============================
+   ERROR
+============================== */
+
+.error {
+
+    color: #d83232;
+
+    font-size: 32px;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 600px) {
+
+    .followers {
+
+        width: 230px;
+
+        padding:
+            17px
+            18px
+            16px;
+    }
+
+    .count {
+
+        font-size: 42px;
+    }
+
+    .title {
+
+        font-size: 10px;
+
+        letter-spacing: 2px;
+    }
+
+    .username {
+
+        font-size: 11px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+```
+<div class="followers">
+
+
+    <div class="title">
+
+        TIKTOK FOLLOWERS
+
+    </div>
+
+
+    <div
+        id="count"
+        class="count loading">
+
+        ---
+
+    </div>
+
+
+    <div class="username">
+
+        @thijmenx.ddhrp
+
+    </div>
+
+
+    <div
+        id="status"
+        class="status">
+
+        CONNECTING...
+
+    </div>
+
+
+</div>
+```
+
+</div>
+
+<script>
+
+/* ==========================================
+   INSTELLINGEN
+========================================== */
+
+
+/*
+    DIT WORDT LATER JE CLOUDFLARE WORKER.
+
+    Bijvoorbeeld:
+
+    https://thijmen-counter.xxxxx.workers.dev
+
+*/
+
+const API_URL =
+    "https://JOUW-WORKER-URL.workers.dev";
+
+
+/*
+    Iedere 2 seconden controleren.
+*/
+
+const REFRESH_TIME =
+    2000;
+
+
+/* ==========================================
+   ELEMENTEN
+========================================== */
+
+const countElement =
+    document.getElementById("count");
+
+const statusElement =
+    document.getElementById("status");
+
+
+/* ==========================================
+   VORIGE COUNT
+========================================== */
+
+let previousCount = null;
+
+
+/* ==========================================
+   GET FOLLOWERS
+========================================== */
+
+async function getFollowers() {
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method: "GET",
+
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "API error"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+            Verwachte response:
+
+            {
+                "followers": 12345
+            }
+        */
+
+
+        if (
+            typeof data.followers
+            !== "number"
+        ) {
+
+            throw new Error(
+                "Geen follower count"
+            );
+
+        }
+
+
+        const followers =
+            data.followers;
+
+
+        /* ==========================
+           COUNT WEERGEVEN
+        ========================== */
+
+        countElement.textContent =
+            followers.toLocaleString(
+                "nl-NL"
+            );
+
+
+        countElement.classList
+            .remove("loading");
+
+
+        statusElement.textContent =
+            "LIVE • UPDATED";
+
+
+        /* ==========================
+           ANIMATIE BIJ VERANDERING
+        ========================== */
+
+        if (
+            previousCount !== null &&
+            previousCount !== followers
+        ) {
+
+            countElement.classList
+                .remove("pop");
+
+
+            void countElement
+                .offsetWidth;
+
+
+            countElement.classList
+                .add("pop");
+
+        }
+
+
+        previousCount =
+            followers;
+
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+
+        statusElement.textContent =
+            "WAITING FOR TIKTOK";
+
+
+    }
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+getFollowers();
+
+
+/* ==========================================
+   ELKE 2 SECONDEN
+========================================== */
+
+setInterval(
+    getFollowers,
+    REFRESH_TIME
+);
+
+</script>
+
+</body>
+</html>
