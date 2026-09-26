@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>LIVE Countdown</title>
+<title>Summer Update Countdown</title>
 
 <style>
 * {
@@ -23,423 +23,298 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* =========================
+/* ==============================
    CONTAINER
-========================= */
+============================== */
 
 #app {
-    position: relative;
     width: 100vw;
     height: 100vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background: transparent;
 }
 
-/* =========================
-   PARTICLES
-========================= */
-
-.particles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.particle {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow:
-        0 0 8px #ffffff,
-        0 0 18px #00eaff,
-        0 0 30px #7a00ff;
-
-    animation: floatParticle linear infinite;
-    opacity: 0;
-}
-
-@keyframes floatParticle {
-    0% {
-        transform: translateY(40px) scale(.4);
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 1;
-    }
-
-    80% {
-        opacity: .8;
-    }
-
-    100% {
-        transform: translateY(-180px) scale(1.2);
-        opacity: 0;
-    }
-}
-
-/* =========================
+/* ==============================
    COUNTDOWN
-========================= */
+============================== */
 
-.countdown-box {
+.countdown {
     position: relative;
+
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 18px 24px 24px;
-    border-radius: 22px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(10,10,25,.88),
-            rgba(25,10,45,.82),
-            rgba(5,20,40,.88)
-        );
+    gap: 10px;
 
-    border: 2px solid rgba(255,255,255,.22);
+    padding: 15px 18px 20px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-radius: 14px;
 
     box-shadow:
-        0 0 15px rgba(0,234,255,.35),
-        0 0 35px rgba(122,0,255,.25),
-        inset 0 0 30px rgba(255,255,255,.04);
+        0 5px 18px rgba(0, 0, 0, 0.18);
 
-    backdrop-filter: blur(8px);
-
-    animation: boxGlow 3s ease-in-out infinite;
+    border: 2px solid rgba(0, 0, 0, 0.08);
 }
 
-@keyframes boxGlow {
-    0%,100% {
-        box-shadow:
-            0 0 15px rgba(0,234,255,.35),
-            0 0 35px rgba(122,0,255,.25),
-            inset 0 0 30px rgba(255,255,255,.04);
-    }
-
-    50% {
-        box-shadow:
-            0 0 25px rgba(0,234,255,.65),
-            0 0 55px rgba(122,0,255,.45),
-            inset 0 0 35px rgba(255,255,255,.07);
-    }
-}
-
-/* =========================
+/* ==============================
    TITLE
-========================= */
+============================== */
 
 .title {
     position: absolute;
-    top: -34px;
+
+    top: -28px;
     left: 50%;
+
     transform: translateX(-50%);
 
-    font-size: 17px;
+    padding: 5px 13px;
+
+    background: #ffffff;
+
+    border-radius: 7px;
+
+    font-size: 12px;
     font-weight: 900;
-    letter-spacing: 5px;
+
+    letter-spacing: 2px;
+
+    color: #111111;
+
     white-space: nowrap;
 
-    color: white;
-
-    text-shadow:
-        0 0 5px #fff,
-        0 0 15px #00eaff,
-        0 0 30px #7a00ff;
-}
-
-/* =========================
-   TIME UNIT
-========================= */
-
-.unit {
-    position: relative;
-    width: 125px;
-    height: 115px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 15px;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.09),
-            rgba(255,255,255,.025)
-        );
-
-    border: 1px solid rgba(255,255,255,.18);
-
-    overflow: hidden;
-
     box-shadow:
-        inset 0 0 20px rgba(0,0,0,.35);
+        0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* shine */
+/* Summer accent */
 
-.unit::before {
+.title::after {
     content: "";
+
     position: absolute;
-    top: -100%;
-    left: -50%;
 
-    width: 40%;
-    height: 300%;
+    left: 0;
+    bottom: 0;
 
-    transform: rotate(25deg);
+    width: 100%;
+    height: 3px;
+
+    border-radius: 10px;
 
     background: linear-gradient(
         90deg,
-        transparent,
-        rgba(255,255,255,.25),
-        transparent
+        #ffd23f,
+        #ffb000,
+        #ff8a00
     );
-
-    animation: shine 4s linear infinite;
 }
 
-@keyframes shine {
-    0% {
-        left: -70%;
-    }
+/* ==============================
+   TIME BLOCK
+============================== */
 
-    45%,
-    100% {
-        left: 150%;
-    }
+.time-box {
+    width: 115px;
+    height: 100px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    border: 2px solid #e7e7e7;
+
+    box-shadow:
+        inset 0 -3px 0 rgba(0, 0, 0, 0.04);
+
+    overflow: hidden;
 }
 
-/* =========================
+/* Subtle summer stripe */
+
+.time-box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background: linear-gradient(
+        90deg,
+        #ffd23f,
+        #ffb000
+    );
+}
+
+/* ==============================
    NUMBERS
-========================= */
+============================== */
 
 .number {
-    position: relative;
-    z-index: 2;
+    font-size: 52px;
 
-    font-size: 54px;
     line-height: 1;
 
-    font-weight: 1000;
+    font-weight: 900;
 
-    color: white;
+    color: #111111;
 
     font-variant-numeric: tabular-nums;
 
-    text-shadow:
-        0 0 5px #ffffff,
-        0 0 12px #00eaff,
-        0 0 25px #00eaff,
-        0 0 45px #7a00ff;
+    letter-spacing: -2px;
 
     transition:
-        color .25s,
-        text-shadow .25s;
+        transform 0.15s ease,
+        color 0.2s ease;
 }
 
-/* =========================
+/* ==============================
    LABEL
-========================= */
+============================== */
 
 .label {
-    position: relative;
-    z-index: 2;
+    margin-top: 7px;
 
-    margin-top: 9px;
+    font-size: 10px;
 
-    font-size: 11px;
-    font-weight: 900;
+    font-weight: 800;
 
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 
-    color: #bffaff;
-
-    text-shadow:
-        0 0 7px #00eaff;
+    color: #777777;
 }
 
-/* =========================
-   SEPARATOR
-========================= */
+/* ==============================
+   SEPARATORS
+============================== */
 
 .separator {
-    font-size: 43px;
-    font-weight: 1000;
+    font-size: 38px;
 
-    color: #ffffff;
+    font-weight: 900;
 
-    margin-top: -13px;
+    color: #222222;
 
-    text-shadow:
-        0 0 8px #00eaff,
-        0 0 18px #7a00ff;
-
-    animation: separatorPulse 1s ease-in-out infinite;
+    margin-top: -8px;
 }
 
-@keyframes separatorPulse {
-    0%,100% {
-        opacity: .55;
-    }
+/* ==============================
+   SMALL POP
+============================== */
 
-    50% {
-        opacity: 1;
-    }
+.pop {
+    transform: scale(1.06);
 }
 
-/* =========================
+/* ==============================
    PROGRESS BAR
-========================= */
+============================== */
 
 .progress {
     position: absolute;
 
-    bottom: 8px;
-    left: 24px;
-    right: 24px;
+    bottom: 7px;
 
-    height: 5px;
+    left: 18px;
+    right: 18px;
 
-    border-radius: 20px;
+    height: 4px;
 
-    background: rgba(255,255,255,.1);
+    background: #eeeeee;
+
+    border-radius: 10px;
 
     overflow: hidden;
 }
 
 .progress-fill {
-    height: 100%;
     width: 0%;
+    height: 100%;
 
-    border-radius: 20px;
+    border-radius: 10px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #00eaff,
-            #7a00ff,
-            #ff00d4
-        );
+    background: linear-gradient(
+        90deg,
+        #ffd23f,
+        #ffb000,
+        #ff8a00
+    );
 
-    box-shadow:
-        0 0 8px #00eaff,
-        0 0 18px #7a00ff,
-        0 0 30px #ff00d4;
-
-    transition: width .5s linear;
+    transition: width 0.5s linear;
 }
 
-/* =========================
-   POP EFFECT
-========================= */
+/* ==============================
+   AFTER 22:00
+============================== */
 
-.pop {
-    animation: numberPop .25s ease-out;
+.finished .countdown {
+    border-color: rgba(220, 40, 40, 0.25);
 }
 
-@keyframes numberPop {
-    0% {
-        transform: scale(1);
-    }
-
-    45% {
-        transform: scale(1.18);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+.finished .title {
+    color: #c92828;
 }
 
-/* =========================
-   FINISHED / OVERTIME
-========================= */
-
-.finished .countdown-box {
-    border-color: rgba(255,40,70,.65);
-
-    animation:
-        redGlow 1.2s ease-in-out infinite;
+.finished .title::after {
+    background: #d83232;
 }
 
-@keyframes redGlow {
-    0%,100% {
-        box-shadow:
-            0 0 15px rgba(255,0,60,.35),
-            0 0 35px rgba(255,0,30,.2),
-            inset 0 0 25px rgba(255,0,30,.03);
-    }
-
-    50% {
-        box-shadow:
-            0 0 30px rgba(255,0,60,.8),
-            0 0 65px rgba(255,0,30,.5),
-            inset 0 0 35px rgba(255,0,30,.08);
-    }
+.finished .time-box::before {
+    background: #d83232;
 }
 
 .finished .number {
-    color: #ff3150;
-
-    text-shadow:
-        0 0 5px #fff,
-        0 0 12px #ff3150,
-        0 0 25px #ff0033,
-        0 0 45px #ff0033;
+    color: #d83232;
 }
 
 .finished .label {
-    color: #ff9aa8;
-
-    text-shadow:
-        0 0 8px #ff0033;
+    color: #a75a5a;
 }
 
 .finished .separator {
-    color: #ff3150;
-
-    text-shadow:
-        0 0 10px #ff0033,
-        0 0 25px #ff0033;
+    color: #d83232;
 }
 
 .finished .progress-fill {
-    background:
-        linear-gradient(
-            90deg,
-            #ff0033,
-            #ff3150,
-            #ff7b00
-        );
-
-    box-shadow:
-        0 0 10px #ff0033,
-        0 0 25px #ff0033;
+    background: #d83232;
 }
 
-/* =========================
-   MOBILE / SMALL WINDOW
-========================= */
+/* ==============================
+   SMALL SCREENS
+============================== */
 
-@media (max-width: 750px) {
+@media (max-width: 700px) {
 
-    .countdown-box {
-        gap: 6px;
-        padding: 15px 12px 21px;
+    .countdown {
+        gap: 5px;
+
+        padding:
+            12px
+            10px
+            18px;
     }
 
-    .unit {
-        width: 75px;
-        height: 80px;
+    .time-box {
+        width: 72px;
+        height: 72px;
     }
 
     .number {
@@ -447,23 +322,22 @@ body {
     }
 
     .label {
-        font-size: 8px;
-        letter-spacing: 1.5px;
+        font-size: 7px;
+        letter-spacing: 1px;
     }
 
     .separator {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .title {
-        font-size: 11px;
-        letter-spacing: 3px;
-        top: -25px;
+        font-size: 9px;
+        top: -23px;
     }
 
     .progress {
-        left: 12px;
-        right: 12px;
+        left: 10px;
+        right: 10px;
     }
 }
 </style>
@@ -475,42 +349,99 @@ body {
 <div id="app">
 
 ```
-<div class="particles" id="particles"></div>
-
-<div class="countdown-box">
+<div class="countdown" id="countdown">
 
     <div class="title" id="title">
-        LIVE STARTS IN
+        SUMMER UPDATE
     </div>
 
-    <div class="unit">
-        <div class="number" id="days">00</div>
-        <div class="label">DAYS</div>
+    <!-- DAYS -->
+    <div class="time-box">
+
+        <div
+            class="number"
+            id="days">
+            00
+        </div>
+
+        <div class="label">
+            DAYS
+        </div>
+
     </div>
 
-    <div class="separator">:</div>
 
-    <div class="unit">
-        <div class="number" id="hours">00</div>
-        <div class="label">HOURS</div>
+    <div class="separator">
+        :
     </div>
 
-    <div class="separator">:</div>
 
-    <div class="unit">
-        <div class="number" id="minutes">00</div>
-        <div class="label">MINUTES</div>
+    <!-- HOURS -->
+    <div class="time-box">
+
+        <div
+            class="number"
+            id="hours">
+            00
+        </div>
+
+        <div class="label">
+            HOURS
+        </div>
+
     </div>
 
-    <div class="separator">:</div>
 
-    <div class="unit">
-        <div class="number" id="seconds">00</div>
-        <div class="label">SECONDS</div>
+    <div class="separator">
+        :
     </div>
 
+
+    <!-- MINUTES -->
+    <div class="time-box">
+
+        <div
+            class="number"
+            id="minutes">
+            00
+        </div>
+
+        <div class="label">
+            MINUTES
+        </div>
+
+    </div>
+
+
+    <div class="separator">
+        :
+    </div>
+
+
+    <!-- SECONDS -->
+    <div class="time-box">
+
+        <div
+            class="number"
+            id="seconds">
+            00
+        </div>
+
+        <div class="label">
+            SECONDS
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
     <div class="progress">
-        <div class="progress-fill" id="progress"></div>
+
+        <div
+            class="progress-fill"
+            id="progress">
+        </div>
+
     </div>
 
 </div>
@@ -520,85 +451,46 @@ body {
 
 <script>
 
-/* ==========================================
-   INSTELLINGEN
-========================================== */
+/* =========================================
+   SUMMER UPDATE COUNTDOWN
+   Target: vandaag om 22:00
+========================================= */
+
+
+/* Tijd instellen */
 
 const TARGET_HOUR = 22;
 const TARGET_MINUTE = 0;
 const TARGET_SECOND = 0;
 
 
-/* ==========================================
-   ELEMENTEN
-========================================== */
+/* Elementen */
 
-const daysEl = document.getElementById("days");
-const hoursEl = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
+const countdown =
+    document.getElementById("countdown");
 
-const titleEl = document.getElementById("title");
-const progressEl = document.getElementById("progress");
+const title =
+    document.getElementById("title");
 
-const app = document.getElementById("app");
+const days =
+    document.getElementById("days");
 
+const hours =
+    document.getElementById("hours");
 
-/* ==========================================
-   PARTICLES MAKEN
-========================================== */
+const minutes =
+    document.getElementById("minutes");
 
-const particleContainer =
-    document.getElementById("particles");
+const seconds =
+    document.getElementById("seconds");
 
-for (let i = 0; i < 35; i++) {
-
-    const particle =
-        document.createElement("div");
-
-    particle.className = "particle";
-
-    particle.style.left =
-        Math.random() * 100 + "%";
-
-    particle.style.top =
-        (55 + Math.random() * 45) + "%";
-
-    particle.style.animationDuration =
-        (3 + Math.random() * 5) + "s";
-
-    particle.style.animationDelay =
-        (Math.random() * 5) + "s";
-
-    particle.style.transform =
-        `scale(${0.4 + Math.random()})`;
-
-    particleContainer.appendChild(particle);
-}
+const progress =
+    document.getElementById("progress");
 
 
-/* ==========================================
-   VANDAAG 22:00
-========================================== */
-
-function getTargetTime() {
-
-    const target = new Date();
-
-    target.setHours(
-        TARGET_HOUR,
-        TARGET_MINUTE,
-        TARGET_SECOND,
-        0
-    );
-
-    return target;
-}
-
-
-/* ==========================================
-   START VAN DE DAG
-========================================== */
+/* =========================================
+   VANDAAG 00:00
+========================================= */
 
 function getStartTime() {
 
@@ -615,20 +507,40 @@ function getStartTime() {
 }
 
 
-/* ==========================================
-   2 CIJFERS
-========================================== */
+/* =========================================
+   VANDAAG 22:00
+========================================= */
+
+function getTargetTime() {
+
+    const target = new Date();
+
+    target.setHours(
+        TARGET_HOUR,
+        TARGET_MINUTE,
+        TARGET_SECOND,
+        0
+    );
+
+    return target;
+}
+
+
+/* =========================================
+   NUMMERS ALTIJD 2 CIJFERS
+========================================= */
 
 function pad(number) {
 
-    return String(number).padStart(2, "0");
+    return String(number)
+        .padStart(2, "0");
 
 }
 
 
-/* ==========================================
-   POP
-========================================== */
+/* =========================================
+   KLEINE ANIMATIE BIJ NIEUWE SECONDE
+========================================= */
 
 function pop(element) {
 
@@ -641,183 +553,212 @@ function pop(element) {
 }
 
 
-/* ==========================================
-   UPDATE
-========================================== */
+/* =========================================
+   COUNTDOWN
+========================================= */
 
-let lastSecond = -1;
+let previousSecond = -1;
+
 
 function updateCountdown() {
 
     const now = new Date();
 
-    const target = getTargetTime();
+    const target =
+        getTargetTime();
 
     let difference =
-        target.getTime() -
+        target.getTime()
+        -
         now.getTime();
 
 
-    /* =========================
-       NORMALE COUNTDOWN
-    ========================= */
+    /* =====================================
+       VOOR 22:00
+    ===================================== */
 
     if (difference > 0) {
 
-        app.classList.remove("finished");
+        countdown.classList.remove(
+            "finished"
+        );
 
-        titleEl.textContent =
-            "LIVE STARTS IN";
+        title.textContent =
+            "SUMMER UPDATE";
+
 
         let totalSeconds =
             Math.floor(
                 difference / 1000
             );
 
-        const days =
+
+        const d =
             Math.floor(
                 totalSeconds / 86400
             );
 
-        totalSeconds %= 86400;
 
-        const hours =
+        totalSeconds =
+            totalSeconds % 86400;
+
+
+        const h =
             Math.floor(
                 totalSeconds / 3600
             );
 
-        totalSeconds %= 3600;
 
-        const minutes =
+        totalSeconds =
+            totalSeconds % 3600;
+
+
+        const m =
             Math.floor(
                 totalSeconds / 60
             );
 
-        const seconds =
+
+        const s =
             totalSeconds % 60;
 
 
-        daysEl.textContent =
-            pad(days);
+        days.textContent =
+            pad(d);
 
-        hoursEl.textContent =
-            pad(hours);
+        hours.textContent =
+            pad(h);
 
-        minutesEl.textContent =
-            pad(minutes);
+        minutes.textContent =
+            pad(m);
 
-        secondsEl.textContent =
-            pad(seconds);
+        seconds.textContent =
+            pad(s);
 
 
-        /* progress */
+        /* Progress bar */
 
         const start =
             getStartTime();
 
         const total =
-            target.getTime() -
+            target.getTime()
+            -
             start.getTime();
 
         const elapsed =
-            now.getTime() -
+            now.getTime()
+            -
             start.getTime();
 
-        let progress =
+
+        let percent =
             (elapsed / total) * 100;
 
-        progress =
+
+        percent =
             Math.max(
                 0,
                 Math.min(
                     100,
-                    progress
+                    percent
                 )
             );
 
-        progressEl.style.width =
-            progress + "%";
+
+        progress.style.width =
+            percent + "%";
 
 
-        /* pop elke seconde */
+        /* Kleine seconde-animatie */
 
-        if (seconds !== lastSecond) {
+        if (s !== previousSecond) {
 
-            pop(secondsEl);
+            pop(seconds);
 
-            lastSecond = seconds;
+            previousSecond = s;
 
         }
 
     }
 
 
-    /* =========================
+    /* =====================================
        NA 22:00
-    ========================= */
+    ===================================== */
 
     else {
 
-        app.classList.add("finished");
+        countdown.classList.add(
+            "finished"
+        );
 
-        titleEl.textContent =
-            "🔥 LIVE IS ON 🔥";
+        title.textContent =
+            "SUMMER UPDATE IS LIVE";
+
 
         difference =
             Math.abs(difference);
+
 
         let totalSeconds =
             Math.floor(
                 difference / 1000
             );
 
-        const days =
+
+        const d =
             Math.floor(
                 totalSeconds / 86400
             );
 
-        totalSeconds %= 86400;
 
-        const hours =
+        totalSeconds =
+            totalSeconds % 86400;
+
+
+        const h =
             Math.floor(
                 totalSeconds / 3600
             );
 
-        totalSeconds %= 3600;
 
-        const minutes =
+        totalSeconds =
+            totalSeconds % 3600;
+
+
+        const m =
             Math.floor(
                 totalSeconds / 60
             );
 
-        const seconds =
+
+        const s =
             totalSeconds % 60;
 
 
-        daysEl.textContent =
-            "+" + pad(days);
+        days.textContent =
+            "+" + pad(d);
 
-        hoursEl.textContent =
-            pad(hours);
+        hours.textContent =
+            pad(h);
 
-        minutesEl.textContent =
-            pad(minutes);
+        minutes.textContent =
+            pad(m);
 
-        secondsEl.textContent =
-            pad(seconds);
+        seconds.textContent =
+            pad(s);
 
 
-        /* progress blijft vol */
-
-        progressEl.style.width =
+        progress.style.width =
             "100%";
 
 
-        if (seconds !== lastSecond) {
+        if (s !== previousSecond) {
 
-            pop(secondsEl);
+            pop(seconds);
 
-            lastSecond = seconds;
+            previousSecond = s;
 
         }
 
@@ -826,11 +767,12 @@ function updateCountdown() {
 }
 
 
-/* ==========================================
+/* =========================================
    START
-========================================== */
+========================================= */
 
 updateCountdown();
+
 
 setInterval(
     updateCountdown,
